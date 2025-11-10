@@ -49,7 +49,34 @@ new #[Layout('components.layouts.auth')] class extends Component {
         RateLimiter::clear($this->throttleKey());
         Session::regenerate();
 
-        $this->redirectIntended(default: route('dashboard', absolute: false), navigate: true);
+        // Afdelingsafhankelijke redirect (normaal/accents/english tolerant)
+        $department = $user->department ?? '';
+        $normalized = Str::ascii(trim($department)); // verwijdert accenten
+        $normalized = Str::lower($normalized); // lowercase voor matching
+
+        $map = [
+            // Nederlands / Engels varianten -> route names
+            'sales'        => 'sales',
+            'inkoop'       => 'purchasing',
+            'purchasing'   => 'purchasing',
+            'procurement'  => 'purchasing',
+
+            'financien'    => 'finance',
+            'financien'    => 'finance',
+            'finance'      => 'finance',
+
+            'technicus'    => 'technician',
+            'technician'   => 'technician',
+
+            'planner'      => 'planner',
+        ];
+
+        if (isset($map[$normalized])) {
+            $this->redirect(route($map[$normalized]), navigate: true);
+        } else {
+            // Geen afdeling -> naar 'none' route
+            $this->redirect(route('none'), navigate: true);
+        }
     }
 
     /**
@@ -148,9 +175,8 @@ new #[Layout('components.layouts.auth')] class extends Component {
     </form>
 
     @if (Route::has('register'))
-        <div class="space-x-1 text-sm text-center rtl:space-x-reverse text-zinc-600 dark:text-zinc-400">
-            <span>{{ __('Don\'t have an account?') }}</span>
-            <flux:link :href="route('register')" wire:navigate>{{ __('Sign up') }}</flux:link>
+        <div class="space-x-1 text-sm text-center rtl:space-x-reverse text-zinc-600 text-zinc-400">
+            <span>{{ __('Don\'t have an account? Ask the administrator to create one.') }}</span>
         </div>
     @endif
 </div>
