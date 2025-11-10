@@ -5,8 +5,19 @@ use Laravel\Fortify\Features;
 use Livewire\Volt\Volt;
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('login');
 })->name('home');
+
+// Afdelingsroutes (beschermd met auth)
+Route::view('sales', 'sales.dashboard')->middleware('auth')->name('sales');
+Route::view('purchasing', 'purchasing.dashboard')->middleware('auth')->name('purchasing');
+Route::view('finance', 'finance.dashboard')->middleware('auth')->name('finance');
+Route::view('technician', 'technician.dashboard')->middleware('auth')->name('technician');
+Route::view('planner', 'planner.dashboard')->middleware('auth')->name('planner');
+
+// Geen afdeling
+Route::view('none', 'none')->middleware('auth')->name('none');
+
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
