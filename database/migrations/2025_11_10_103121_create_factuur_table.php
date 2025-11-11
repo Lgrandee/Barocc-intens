@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('factuur', function (Blueprint $table) {
+        Schema::create('facturen', function (Blueprint $table) {
             $table->id();
-            $table->integer('name_company_id')->foreign()->references('name_company')->on('customer');
-            $table->integer('product_id')->foreign()->references('id')->on('product');
+            $table->foreignId('name_company_id')->constrained('customers');
+            $table->foreignId('product_id')->constrained('products');
             $table->date('invoice_date');
             $table->date('due_date');
             $table->enum('status', ['paid', 'unpaid', 'overdue']);
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('factuur');
+        Schema::dropIfExists('facturen');
     }
 };

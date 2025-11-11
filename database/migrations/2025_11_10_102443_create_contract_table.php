@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('contract', function (Blueprint $table) {
+        Schema::create('contracts', function (Blueprint $table) {
             $table->id();
-            $table->integer('name_company_id')->foreign()->references('name_company')->on('customer');
-            $table->integer('product_id')->foreign()->references('id')->on('product');
+            $table->foreignId('name_company_id')->constrained('customers');
+            $table->foreignId('product_id')->constrained('products');
             $table->date('start_date');
             $table->date('end_date');
             $table->enum('status', ['active', 'inactive', 'pending']);
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('contract');
+        Schema::dropIfExists('contracts');
     }
 };
