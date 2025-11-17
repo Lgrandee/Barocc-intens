@@ -21,5 +21,45 @@ class UserSeeder extends Seeder
             'is_admin' => true,
             'department' => 'management',
         ]);
+
+        User::create([
+            'name' => 'Sales Medewerker',
+            'email' => 'sales@barocc.nl',
+            'password' => Hash::make('password123'),
+            'is_admin' => false,
+            'department' => 'Sales',
+        ]);
+
+        User::create([
+            'name' => 'Purchasing Medewerker',
+            'email' => 'purchasing@barocc.nl',
+            'password' => Hash::make('password123'),
+            'is_admin' => false,
+            'department' => 'Purchasing',
+        ]);
+
+        User::create([
+            'name' => 'Finance Medewerker',
+            'email' => 'finance@barocc.nl',
+            'password' => Hash::make('password123'),
+            'is_admin' => false,
+            'department' => 'Finance',
+        ]);
+
+        User::create([
+            'name' => 'Technician Medewerker',
+            'email' => 'technician@barocc.nl',
+            'password' => Hash::make('password123'),
+            'is_admin' => false,
+            'department' => 'Technician',
+        ]);
+
+        User::create([
+            'name' => 'Planner Medewerker',
+            'email' => 'planner@barocc.nl',
+            'password' => Hash::make('password123'),
+            'is_admin' => false,
+            'department' => 'Planner',
+        ]);
     }
 }
