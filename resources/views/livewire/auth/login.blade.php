@@ -40,7 +40,6 @@ new #[Layout('components.layouts.auth')] class extends Component {
             ]);
 
             $this->redirect(route('two-factor.login'), navigate: true);
-
             return;
         }
 
@@ -49,33 +48,38 @@ new #[Layout('components.layouts.auth')] class extends Component {
         RateLimiter::clear($this->throttleKey());
         Session::regenerate();
 
-        // Afdelingsafhankelijke redirect (normaal/accents/english tolerant)
-        $department = $user->department ?? '';
-        $normalized = Str::ascii(trim($department)); // verwijdert accenten
-        $normalized = Str::lower($normalized); // lowercase voor matching
+        // ✅ Afdelingsafhankelijke redirect
+        switch ($user->department) {
+            case 'Sales':
+                $this->redirect(route('sales.dashboard'), navigate: true);
+                break;
 
-        $map = [
-            // Nederlands / Engels varianten -> route names
-            'sales'        => 'sales',
-            'inkoop'       => 'purchasing',
-            'purchasing'   => 'purchasing',
-            'procurement'  => 'purchasing',
+            case 'Purchasing':
+                $this->redirect(route('purchasing.dashboard'), navigate: true);
+                break;
 
-            'financien'    => 'finance',
-            'financien'    => 'finance',
-            'finance'      => 'finance',
+            case 'Finance':
+                $this->redirect(route('finance.dashboard'), navigate: true);
+                break;
 
-            'technicus'    => 'technician',
-            'technician'   => 'technician',
+            case 'Technician':
+                $this->redirect(route('technician.dashboard'), navigate: true);
+                break;
 
-            'planner'      => 'planner',
-        ];
+            case 'Planner':
+                // Planner gebruikt het Sales-dashboard
+                $this->redirect(route('sales.dashboard'), navigate: true);
+                break;
 
-        if (isset($map[$normalized])) {
-            $this->redirect(route($map[$normalized]), navigate: true);
-        } else {
-            // Geen afdeling -> naar 'none' route
-            $this->redirect(route('none'), navigate: true);
+            case 'Management':
+                // Management → admin dashboard
+                $this->redirect(route('admin.dashboard'), navigate: true);
+                break;
+
+            default:
+                // Geen afdeling gekoppeld → stuur naar 'none'
+                $this->redirect(route('none'), navigate: true);
+                break;
         }
     }
 
