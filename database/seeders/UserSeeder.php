@@ -16,7 +16,7 @@ class UserSeeder extends Seeder
     {
         User::create([
             'name' => 'Admin User',
-            'email' => 'admin@gmail.com',
+            'email' => 'admin@barocc.com',
             'password' => Hash::make('password123'),
             'is_admin' => true,
             'department' => 'Management',
