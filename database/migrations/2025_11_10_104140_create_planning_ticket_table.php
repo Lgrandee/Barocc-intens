@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('planning_ticket', function (Blueprint $table) {
+        Schema::create('planning_tickets', function (Blueprint $table) {
             $table->id();
             $table->enum('catagory', ['meeting', 'installation', 'service']);
-            $table->integer('feedback_id')->foreign()->references('id')->on('feedback');
+            $table->foreignId('feedback_id')->constrained('feedbacks');
             $table->string('location');
             $table->dateTime('scheduled_time');
-            $table->integer('user_id')->foreign()->references('id')->on('users');
+            $table->foreignId('user_id')->constrained('users');
             $table->timestamps();
         });
     }
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('planning_ticket');
+        Schema::dropIfExists('planning_tickets');
     }
 };
