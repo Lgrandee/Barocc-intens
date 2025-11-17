@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
-            $table->enum('department', ['Sales', 'Purchasing', 'Finance', 'Technician', 'Planner', 'management'])->nullable();
+            $table->enum('department', ['Sales', 'Purchasing', 'Finance', 'Technician', 'Planner', 'Management'])->nullable();
             $table->boolean('is_admin')->default(false);
             $table->string('address')->nullable();
             $table->string('zipcode')->nullable();
