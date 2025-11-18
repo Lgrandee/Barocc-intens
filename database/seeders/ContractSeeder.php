@@ -16,14 +16,17 @@ class ContractSeeder extends Seeder
     public function run(): void
     {
         Customer::all()->each(function ($customer) {
-        $contract = Contract::factory()->create([
-            'name_company_id' => $customer->id
-        ]);
+            $contract = Contract::factory()->create([
+                'name_company_id' => $customer->id
+            ]);
 
-        // Attach 1-2 random products
-        $productIds = Product::inRandomOrder()->take(rand(1, 2))->pluck('id')->toArray();
-        $contract->products()->sync($productIds);
-    });
-
+            // Attach 1-3 random products with random quantities
+            $products = Product::inRandomOrder()->take(rand(1, 3))->get();
+            $syncData = [];
+            foreach ($products as $product) {
+                $syncData[$product->id] = ['quantity' => rand(1, 5)];
+            }
+            $contract->products()->sync($syncData);
+        });
     }
 }

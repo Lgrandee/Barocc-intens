@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('feedbacks', function (Blueprint $table) {
             $table->id();
             $table->text('feedback');
-            $table->foreignId('employee_id')->constrained('users');
+            $table->foreignId('employee_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

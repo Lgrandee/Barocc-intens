@@ -29,9 +29,6 @@ class CustomerFactory extends Factory
             'city' => $this->faker->city(),
             'zipcode' => $this->faker->postcode(),
             'bkr_status' => $this->faker->randomElement(['approved', 'denied', 'pending', 'unknown']),
-            'offerte_id' => Offerte::inRandomOrder()->first()?->id,
-            'factuur_id' => Factuur::inRandomOrder()->first()?->id,
-            'contract_id' => Contract::inRandomOrder()->first()?->id,
         ];
     }
 }
