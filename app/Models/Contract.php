@@ -26,4 +26,9 @@ class Contract extends Model
     {
         return $this->belongsTo(Product::class);
     }
+
+    public function products()
+    {
+        return $this->belongsToMany(Product::class, 'contract_product');
+    }
 }

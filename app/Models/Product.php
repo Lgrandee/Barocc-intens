@@ -20,6 +20,11 @@ class Product extends Model
         return $this->hasMany(Contract::class);
     }
 
+    public function linkedContracts()
+    {
+        return $this->belongsToMany(Contract::class, 'contract_product');
+    }
+
     public function facturen()
     {
         return $this->hasMany(Factuur::class);
