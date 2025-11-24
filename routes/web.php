@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\ContractController;
+use App\Http\Controllers\CustomerController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 use Livewire\Volt\Volt;
@@ -16,9 +18,32 @@ Route::view('technician', 'technician.dashboard')->middleware('auth')->name('tec
 Route::view('planner', 'planner.dashboard')->middleware('auth')->name('planner');
 Route::view('admin', 'admin.dashboard-simple')->middleware('auth')->name('management');
 
+// Sales Department
+Route::view('sales', 'sales.dashboard')->middleware('auth')->name('sales.dashboard');
+Route::get('/customers', [CustomerController::class, 'index'])->name('customers.index');
+Route::get('/customers/create', [CustomerController::class, 'create'])->name('customers.create');
+Route::post('/customers', [CustomerController::class, 'store'])->name('customers.store');
+Route::get('/customers/{customer}/edit', [CustomerController::class, 'goToEdit'])->name('customers.edit');
+Route::put('/customers/{customer}', [CustomerController::class, 'edit'])->name('customers.update');
+Route::delete('/customers/{customer}', [CustomerController::class, 'destroy'])->name('customers.destroy');
+
+
+Route::view('purchasing', 'purchasing.dashboard')->middleware('auth')->name('purchasing.dashboard');
+Route::view('finance', 'finance.dashboard')->middleware('auth')->name('finance.dashboard');
+Route::view('technician', 'technician.dashboard')->middleware('auth')->name('technician.dashboard');
+Route::view('planner', 'planner.dashboard')->middleware('auth')->name('planner.dashboard');
+Route::view('admin', 'admin.dashboard')->middleware('auth')->name('management.dashboard');
+
+// Contract routes - alleen voor Finance en Admin
+Route::get('/contracts', [ContractController::class, 'index'])->middleware('auth')->name('contracts.index');
+Route::get('/contracts/create', [ContractController::class, 'create'])->middleware('auth')->name('contracts.create');
+Route::post('/contracts', [ContractController::class, 'store'])->middleware('auth')->name('contracts.store');
+Route::get('/contracts/{id}', [ContractController::class, 'show'])->middleware('auth')->name('contracts.show');
+Route::get('/contracts/{id}/pdf', [ContractController::class, 'downloadPdf'])->middleware('auth')->name('contracts.pdf');
 
 // Geen afdeling
 Route::view('none', 'none')->middleware('auth')->name('none');
+
 
 
 Route::view('dashboard', 'dashboard')

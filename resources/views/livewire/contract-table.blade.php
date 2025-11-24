@@ -1,0 +1,141 @@
+<div>
+  <!-- Search and filter bar -->
+  <div class="p-4 border-b border-gray-100 bg-gray-50">
+    <div class="flex flex-wrap gap-3">
+      <input
+        type="text"
+        wire:model.live.debounce.100ms="search"
+        placeholder="Search by contract number, customer or project"
+        class="flex-1 min-w-[300px] px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+      />
+
+      <select wire:model.live="status" class="px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+        <option value="all">All statuses</option>
+        <option value="active">active</option>
+        <option value="inactive">inactive</option>
+        <option value="pending">pending</option>
+      </select>
+
+      <select class="px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+        <option>All types</option>
+      </select>
+
+      @if($search || $status !== 'all')
+        <button wire:click="resetFilters" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md text-sm font-medium hover:bg-gray-300">
+          Reset
+        </button>
+      @endif
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div class="overflow-x-auto">
+    <table class="w-full">
+      <thead class="bg-gray-50 border-b border-gray-200">
+        <tr>
+          <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Contract</th>
+          <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer</th>
+          <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Start</th>
+          <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">End</th>
+          <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"></th>
+          <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"></th>
+        </tr>
+      </thead>
+      <tbody class="bg-white divide-y divide-gray-200">
+        @forelse($contracts as $contract)
+          <tr class="hover:bg-gray-50">
+            <td class="px-4 py-4">
+              <div class="font-medium text-gray-900">CON-{{ date('Y', strtotime($contract->start_date)) }}-{{ str_pad($contract->id, 3, '0', STR_PAD_LEFT) }}</div>
+              <div class="text-sm text-gray-500">{{ $contract->products->pluck('product_name')->join(', ') ?: ($contract->product->product_name ?? 'N/A') }} — Location: {{ $contract->customer->city ?? 'Unknown' }}</div>
+            </td>
+            <td class="px-4 py-4 text-sm text-gray-900">
+              {{ $contract->customer->name_company ?? 'Unknown' }}
+            </td>
+            <td class="px-4 py-4 text-sm text-gray-900">
+              {{ \Carbon\Carbon::parse($contract->start_date)->format('d M Y') }}
+            </td>
+            <td class="px-4 py-4 text-sm text-gray-900">
+              {{ \Carbon\Carbon::parse($contract->end_date)->format('d M Y') }}
+            </td>
+            <td class="px-4 py-4">
+              @php
+                $statusColors = [
+                  'active' => 'bg-green-100 text-green-800',
+                  'inactive' => 'bg-red-100 text-red-800',
+                  'pending' => 'bg-yellow-100 text-yellow-800'
+                ];
+                $statusLabels = [
+                  'active' => 'active',
+                  'inactive' => 'inactive',
+                  'pending' => 'pending'
+                ];
+              @endphp
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $statusColors[$contract->status] ?? 'bg-gray-100 text-gray-800' }}">
+                {{ $statusLabels[$contract->status] ?? ucfirst($contract->status) }}
+              </span>
+            </td>
+            <td class="px-4 py-4 text-right">
+              <a href="{{ route('contracts.show', $contract->id) }}" class="text-indigo-600 hover:text-indigo-900 text-sm font-medium">View</a>
+            </td>
+          </tr>
+        @empty
+          <tr>
+            <td colspan="6" class="px-4 py-8 text-center text-gray-500 text-sm">
+              No contracts found
+            </td>
+          </tr>
+        @endforelse
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Footer with pagination -->
+  <div class="flex flex-col items-center gap-3 px-4 py-3 border-t border-gray-200 bg-gray-50">
+    <div class="text-sm text-gray-700">
+      Showing {{ $contracts->firstItem() ?? 0 }}–{{ $contracts->lastItem() ?? 0 }} of {{ $contracts->total() }}
+    </div>
+    <div class="flex gap-1 items-center">
+      @if ($contracts->onFirstPage())
+        <span class="px-3 py-1 border border-gray-300 rounded text-sm text-gray-400 cursor-not-allowed">‹</span>
+      @else
+        <button wire:click="previousPage" class="px-3 py-1 border border-gray-300 rounded text-sm text-gray-700 hover:bg-gray-100">‹</button>
+      @endif
+
+      @php
+        $currentPage = $contracts->currentPage();
+        $lastPage = $contracts->lastPage();
+        $start = max(1, $currentPage - 2);
+        $end = min($lastPage, $currentPage + 2);
+      @endphp
+
+      @if ($start > 1)
+        <button wire:click="gotoPage(1)" class="px-3 py-1 border border-gray-300 rounded text-sm text-gray-700 hover:bg-gray-100">1</button>
+        @if ($start > 2)
+          <span class="px-2 text-gray-500">...</span>
+        @endif
+      @endif
+
+      @for ($page = $start; $page <= $end; $page++)
+        @if ($page == $currentPage)
+          <span class="px-3 py-1 border border-indigo-600 bg-indigo-600 text-white rounded text-sm font-medium">{{ $page }}</span>
+        @else
+          <button wire:click="gotoPage({{ $page }})" class="px-3 py-1 border border-gray-300 rounded text-sm text-gray-700 hover:bg-gray-100">{{ $page }}</button>
+        @endif
+      @endfor
+
+      @if ($end < $lastPage)
+        @if ($end < $lastPage - 1)
+          <span class="px-2 text-gray-500">...</span>
+        @endif
+        <button wire:click="gotoPage({{ $lastPage }})" class="px-3 py-1 border border-gray-300 rounded text-sm text-gray-700 hover:bg-gray-100">{{ $lastPage }}</button>
+      @endif
+
+      @if ($contracts->hasMorePages())
+        <button wire:click="nextPage" class="px-3 py-1 border border-gray-300 rounded text-sm text-gray-700 hover:bg-gray-100">›</button>
+      @else
+        <span class="px-3 py-1 border border-gray-300 rounded text-sm text-gray-400 cursor-not-allowed">›</span>
+      @endif
+    </div>
+  </div>
+</div>
+

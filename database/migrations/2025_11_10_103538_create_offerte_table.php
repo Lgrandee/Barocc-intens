@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('offerte', function (Blueprint $table) {
+        Schema::create('offertes', function (Blueprint $table) {
             $table->id();
-            $table->integer('name_company_id')->foreign()->references('name_company')->on('customer');
-            $table->integer('product_id')->foreign()->references('id')->on('product');
+            $table->foreignId('name_company_id')->constrained('customers')->onDelete('cascade');
+            $table->foreignId('product_id')->nullable()->constrained('products')->onDelete('set null');
             $table->enum('status', ['accepted', 'rejected', 'pending']);
             $table->timestamps();
         });
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('offerte');
+        Schema::dropIfExists('offertes');
     }
 };

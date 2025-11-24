@@ -18,10 +18,10 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('phone_number');
             $table->string('bkr_number');
-            $table->enum('bkr_status', ['approved', 'denied', 'pending']);
-            $table->integer('offerte_id')->foreign()->references('id')->on('offertes');
-            $table->integer('factuur_id')->foreign()->references('id')->on('facturen');
-            $table->integer('contract_id')->foreign()->references('id')->on('contract');
+            $table->string('address');
+            $table->string('city');
+            $table->string('zipcode');
+            $table->enum('bkr_status', ['approved', 'denied', 'pending', 'unknown'])->default('unknown');
             $table->timestamps();
         });
     }

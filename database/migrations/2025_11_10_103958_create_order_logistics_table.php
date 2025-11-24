@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('order_logistics', function (Blueprint $table) {
             $table->id();
-            $table->integer('product_id')->foreign()->references('id')->on('product');
+            $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
             $table->integer('amount');
-            $table->decimal('price');
+            $table->decimal('price', 10, 2);
             $table->timestamps();
         });
     }
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('emoji');
+        Schema::dropIfExists('order_logistics');
     }
 };

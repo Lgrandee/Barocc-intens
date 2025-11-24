@@ -1,6 +1,3 @@
-<div class="flex aspect-square size-8 items-center justify-center rounded-md bg-accent-content text-accent-foreground">
-    <x-app-logo-icon class="size-5 fill-current text-white dark:text-black" />
-</div>
-<div class="ms-1 grid flex-1 text-start text-sm">
-    <span class="mb-0.5 truncate leading-tight font-semibold">Laravel Starter Kit</span>
+<div class="ms-1 grid flex-1 text-center text-L bg-gradient-to-r from-black to-yellow-400 rounded-md px-2 py-1 text-white">
+    <span class="mb-0.5 truncate leading-tight font-semibold">Barocc Intens</span>
 </div>
