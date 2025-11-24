@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ContractController;
 use App\Http\Controllers\CustomerController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
@@ -26,6 +27,13 @@ Route::view('finance', 'finance.dashboard')->middleware('auth')->name('finance.d
 Route::view('technician', 'technician.dashboard')->middleware('auth')->name('technician.dashboard');
 Route::view('planner', 'planner.dashboard')->middleware('auth')->name('planner.dashboard');
 Route::view('admin', 'admin.dashboard')->middleware('auth')->name('management.dashboard');
+
+// Contract routes - alleen voor Finance en Admin
+Route::get('/contracts', [ContractController::class, 'index'])->middleware('auth')->name('contracts.index');
+Route::get('/contracts/create', [ContractController::class, 'create'])->middleware('auth')->name('contracts.create');
+Route::post('/contracts', [ContractController::class, 'store'])->middleware('auth')->name('contracts.store');
+Route::get('/contracts/{id}', [ContractController::class, 'show'])->middleware('auth')->name('contracts.show');
+Route::get('/contracts/{id}/pdf', [ContractController::class, 'downloadPdf'])->middleware('auth')->name('contracts.pdf');
 
 // Geen afdeling
 Route::view('none', 'none')->middleware('auth')->name('none');

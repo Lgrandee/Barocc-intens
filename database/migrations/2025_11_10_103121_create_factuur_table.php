@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('facturen', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('name_company_id')->constrained('customers');
-            $table->foreignId('product_id')->constrained('products');
+            $table->foreignId('name_company_id')->constrained('customers')->onDelete('cascade');
+            $table->foreignId('product_id')->nullable()->constrained('products')->onDelete('set null');
             $table->date('invoice_date');
             $table->date('due_date');
             $table->enum('status', ['paid', 'unpaid', 'overdue']);

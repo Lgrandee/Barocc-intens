@@ -22,9 +22,6 @@ return new class extends Migration
             $table->string('city');
             $table->string('zipcode');
             $table->enum('bkr_status', ['approved', 'denied', 'pending', 'unknown'])->default('unknown');
-            $table->foreignId('offerte_id')->nullable()->constrained('offertes');
-            $table->foreignId('factuur_id')->nullable()->constrained('facturen');
-            $table->foreignId('contract_id')->nullable()->constrained('contracts');
             $table->timestamps();
         });
     }
