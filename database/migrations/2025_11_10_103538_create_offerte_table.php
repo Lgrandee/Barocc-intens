@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('name_company_id')->constrained('customers')->onDelete('cascade');
             $table->foreignId('product_id')->nullable()->constrained('products')->onDelete('set null');
-            $table->enum('status', ['accepted', 'rejected', 'pending']);
+            $table->enum('status', ['accepted', 'rejected', 'pending', 'draft']);
             $table->timestamps();
         });
     }

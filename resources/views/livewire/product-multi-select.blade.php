@@ -42,7 +42,7 @@
     </div>
 
     {{-- Selected products list (shopping cart style) --}}
-    @if(count($selected) > 0)
+    @if(!empty($selected) && count($selected) > 0)
       <div class="border border-gray-300 rounded-md overflow-hidden mt-4">
         <div class="bg-gray-100 px-4 py-2 border-b border-gray-300">
           <div class="flex justify-between items-center">
@@ -59,7 +59,12 @@
               <div class="px-4 py-3 hover:bg-blue-50 flex justify-between items-center bg-white">
                 <div class="flex-1">
                   <div class="font-medium text-sm">{{ $product->product_name }}</div>
-                  <div class="text-xs text-gray-500 mt-0.5">€{{ number_format($product->price, 2, ',', '.') }} / year</div>
+                  <div class="flex gap-3 mt-0.5">
+                    <span class="text-xs text-gray-500">€{{ number_format($product->price, 2, ',', '.') }} / year</span>
+                    <span class="text-xs {{ $product->stock > 0 ? 'text-green-600' : 'text-red-600' }} font-medium">
+                      Stock: {{ $product->stock }}
+                    </span>
+                  </div>
                 </div>
                 <div class="flex items-center gap-2">
                   <button type="button" wire:click="decrement({{ $product->id }})" class="px-2 py-1 bg-gray-200 rounded text-sm font-bold">-</button>
@@ -67,8 +72,8 @@
                   <button type="button" wire:click="increment({{ $product->id }})" class="px-2 py-1 bg-gray-200 rounded text-sm font-bold">+</button>
                   <button
                     type="button"
-                    wire:click.prevent="toggle({{ $product->id }})"
-                    onclick="return confirm('Are you sure you want to remove {{ addslashes($product->product_name) }} from the contract?')"
+                    wire:click="remove({{ $product->id }})"
+                    wire:confirm="Are you sure you want to remove this product?"
                     class="ml-2 text-red-600 hover:text-red-800 text-sm font-medium"
                   >Remove</button>
                 </div>
@@ -79,7 +84,11 @@
         </div>
         <div class="bg-gray-100 px-4 py-3 border-t border-gray-300 space-y-2">
           @php
-            $subtotal = collect($selected)->map(fn($id) => \App\Models\Product::find($id)?->price ?? 0)->sum();
+            $subtotal = collect($selected)->sum(function($id) {
+              $product = \App\Models\Product::find($id);
+              $qty = $this->quantities[$id] ?? 1;
+              return ($product?->price ?? 0) * $qty;
+            });
             $vat = $subtotal * 0.21;
             $total = $subtotal + $vat;
           @endphp

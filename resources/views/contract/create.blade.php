@@ -66,6 +66,12 @@
             </div>
           </div>
 
+          <div class="bg-blue-50 border border-blue-200 rounded-md p-4">
+            <h3 class="font-semibold text-blue-900 mb-2">Maintenance Policy</h3>
+            <p class="text-sm text-blue-800 mb-2">This contract includes <strong>1 free maintenance visit per month</strong>.</p>
+            <p class="text-sm text-blue-800">Additional maintenance visits will be charged unless caused by a Barroc Intens defect. Customer must contact: <strong>service@barroc.nl</strong></p>
+          </div>
+
           <div class="flex justify-between items-center pt-4">
             <a href="{{ route('contracts.index') }}" class="text-sm text-gray-600 hover:text-gray-800 hover:underline">Cancel</a>
             <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md font-medium transition-colors">
