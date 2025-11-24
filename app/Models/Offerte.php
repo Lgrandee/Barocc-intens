@@ -26,4 +26,9 @@ class Offerte extends Model
     {
         return $this->belongsTo(Product::class);
     }
+
+    public function products()
+    {
+        return $this->belongsToMany(Product::class, 'offerte_products')->withPivot('quantity')->withTimestamps();
+    }
 }

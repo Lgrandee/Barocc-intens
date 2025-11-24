@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ContractController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\OfferteController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 use Livewire\Volt\Volt;
@@ -34,6 +35,15 @@ Route::get('/contracts/create', [ContractController::class, 'create'])->middlewa
 Route::post('/contracts', [ContractController::class, 'store'])->middleware('auth')->name('contracts.store');
 Route::get('/contracts/{id}', [ContractController::class, 'show'])->middleware('auth')->name('contracts.show');
 Route::get('/contracts/{id}/pdf', [ContractController::class, 'downloadPdf'])->middleware('auth')->name('contracts.pdf');
+
+// Offerte routes - alleen voor Sales en Management
+Route::get('/offertes', [OfferteController::class, 'index'])->middleware('auth')->name('offertes.index');
+Route::get('/offertes/create', [OfferteController::class, 'create'])->middleware('auth')->name('offertes.create');
+Route::post('/offertes', [OfferteController::class, 'store'])->middleware('auth')->name('offertes.store');
+Route::get('/offertes/{id}', [OfferteController::class, 'show'])->middleware('auth')->name('offertes.show');
+Route::get('/offertes/{id}/edit', [OfferteController::class, 'edit'])->middleware('auth')->name('offertes.edit');
+Route::put('/offertes/{id}', [OfferteController::class, 'update'])->middleware('auth')->name('offertes.update');
+Route::get('/offertes/{id}/pdf', [OfferteController::class, 'downloadPdf'])->middleware('auth')->name('offertes.pdf');
 
 // Geen afdeling
 Route::view('none', 'none')->middleware('auth')->name('none');
