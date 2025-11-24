@@ -61,6 +61,18 @@
         </ul>
     </div>
 
+    <h2>Maintenance Conditions</h2>
+    <div class="terms">
+        <p><strong>For maintenance requests, customers must contact Barroc Intens directly.</strong></p>
+        <p>Customers are entitled to <strong>one free maintenance visit per month</strong>. If additional maintenance is required beyond the monthly free visit, and the issue is not caused by a defect from Barroc Intens, additional costs will apply.</p>
+        <ul>
+            <li>Free maintenance: 1 visit per month included in contract</li>
+            <li>Additional visits: Charged at standard service rates</li>
+            <li>Defects caused by Barroc Intens: Always covered at no cost</li>
+            <li>Contact: service@barroc.nl or +31 (0)20 123 4567</li>
+        </ul>
+    </div>
+
     <h2>Payment & Service Planning</h2>
     <table>
         <thead>
