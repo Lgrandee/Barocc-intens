@@ -48,16 +48,3 @@
 	</div>
 @endsection
 
-@section('activity')
-	<div class="bg-purple-50 border border-purple-200 rounded-lg p-4">
-		<h3 class="font-medium mb-3">👤 Admin Activiteiten</h3>
-		<div class="space-y-2 text-sm">
-			<div>• Gebruiker toegevoegd: Jan de Vries (14:30)</div>
-			<div>• System backup voltooid (12:00)</div>
-			<div>• Security scan uitgevoerd (10:15)</div>
-		</div>
-		<div class="mt-3 text-xs text-purple-600">
-			Laatst bijgewerkt: {{ now()->format('H:i:s') }}
-		</div>
-	</div>
-@endsection
