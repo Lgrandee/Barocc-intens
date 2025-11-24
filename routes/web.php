@@ -26,7 +26,7 @@ Route::view('purchasing', 'purchasing.dashboard')->middleware('auth')->name('pur
 Route::view('finance', 'finance.dashboard')->middleware('auth')->name('finance.dashboard');
 Route::view('technician', 'technician.dashboard')->middleware('auth')->name('technician.dashboard');
 Route::view('planner', 'planner.dashboard')->middleware('auth')->name('planner.dashboard');
-Route::view('admin', 'admin.dashboard')->middleware('auth')->name('management.dashboard');
+Route::view('admin', 'admin.dashboard-new')->middleware('auth')->name('management.dashboard');
 
 // Contract routes - alleen voor Finance en Admin
 Route::get('/contracts', [ContractController::class, 'index'])->middleware('auth')->name('contracts.index');
