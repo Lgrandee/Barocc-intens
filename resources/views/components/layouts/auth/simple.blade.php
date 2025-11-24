@@ -10,7 +10,7 @@
                     <!-- Logo en Bedrijfsnaam -->
                     <div class="flex items-center justify-center gap-4 pb-2">
                         <img src="{{ asset('img/Logo6_groot.png') }}" alt="{{ config('app.name') }}" class="h-14 w-auto">
-                        <span style="font-size: 1.875rem;" class="font-bold text-zinc-900 dark:text-white">Barocc Intens</span>
+                        <span style="font-size: 1.875rem;" class="font-bold text-zinc-900 dark:text-white">Barroc Intens</span>
                     </div>
 
                     {{ $slot }}
