@@ -31,4 +31,9 @@ class Offerte extends Model
     {
         return $this->belongsToMany(Product::class, 'offerte_products')->withPivot('quantity')->withTimestamps();
     }
+
+    public function factuur()
+    {
+        return $this->hasOne(Factuur::class);
+    }
 }

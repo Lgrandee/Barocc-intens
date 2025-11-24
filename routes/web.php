@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ContractController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\FactuurController;
 use App\Http\Controllers\OfferteController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
@@ -44,6 +45,16 @@ Route::get('/offertes/{id}', [OfferteController::class, 'show'])->middleware('au
 Route::get('/offertes/{id}/edit', [OfferteController::class, 'edit'])->middleware('auth')->name('offertes.edit');
 Route::put('/offertes/{id}', [OfferteController::class, 'update'])->middleware('auth')->name('offertes.update');
 Route::get('/offertes/{id}/pdf', [OfferteController::class, 'downloadPdf'])->middleware('auth')->name('offertes.pdf');
+
+// Factuur routes - alleen voor Finance en Management
+Route::get('/facturen', [FactuurController::class, 'index'])->middleware('auth')->name('facturen.index');
+Route::get('/facturen/create', [FactuurController::class, 'create'])->middleware('auth')->name('facturen.create');
+Route::post('/facturen', [FactuurController::class, 'store'])->middleware('auth')->name('facturen.store');
+Route::get('/facturen/{id}/edit', [FactuurController::class, 'edit'])->middleware('auth')->name('facturen.edit');
+Route::put('/facturen/{id}', [FactuurController::class, 'update'])->middleware('auth')->name('facturen.update');
+Route::get('/facturen/{id}/send', [FactuurController::class, 'send'])->middleware('auth')->name('facturen.send');
+Route::post('/facturen/{id}/send', [FactuurController::class, 'sendEmail'])->middleware('auth')->name('facturen.sendEmail');
+Route::get('/facturen/{id}/pdf', [FactuurController::class, 'downloadPdf'])->middleware('auth')->name('facturen.pdf');
 
 // Geen afdeling
 Route::view('none', 'none')->middleware('auth')->name('none');

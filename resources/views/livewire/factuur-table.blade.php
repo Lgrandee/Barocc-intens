@@ -4,13 +4,14 @@
     <div class="flex flex-wrap gap-3">
       <select wire:model.live="status" class="px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
         <option value="all">Alle statussen</option>
-        <option value="pending">Verstuurd</option>
-        <option value="accepted">Goedgekeurd</option>
-        <option value="rejected">Verlopen</option>
+        <option value="concept">Concept</option>
+        <option value="verzonden">Verzonden</option>
+        <option value="betaald">Betaald</option>
+        <option value="verlopen">Verlopen</option>
       </select>
 
       <select wire:model.live="period" class="px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
-        <option value="last_7_days">Laatste 7 dagen</option>
+        <option value="this_month">Deze maand</option>
         <option value="last_30_days">Laatste 30 dagen</option>
         <option value="last_90_days">Laatste 90 dagen</option>
         <option value="all">Alle periodes</option>
@@ -19,11 +20,11 @@
       <input
         type="text"
         wire:model.live.debounce.300ms="search"
-        placeholder="Zoek op nummer of klantnaam"
+        placeholder="Zoek op factuurnummer, klantnaam..."
         class="flex-1 min-w-[300px] px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
       />
 
-      @if($search || $status !== 'all' || $period !== 'last_7_days')
+      @if($search || $status !== 'all' || $period !== 'this_month')
         <button wire:click="resetFilters" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md text-sm font-medium hover:bg-gray-300">
           Reset
         </button>
@@ -36,94 +37,82 @@
     <table class="w-full">
       <thead class="bg-gray-50 border-b border-gray-200">
         <tr>
-          <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nummer</th>
+          <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Factuurnr.</th>
           <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Klant</th>
-          <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Bedrag</th>
           <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Datum</th>
-          <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Verloopt op</th>
+          <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Vervaldatum</th>
+          <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Bedrag</th>
           <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
           <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acties</th>
         </tr>
       </thead>
       <tbody class="bg-white divide-y divide-gray-200">
-        @forelse($offertes as $offerte)
+        @forelse($facturen as $factuur)
           <tr class="hover:bg-gray-50">
             <td class="px-4 py-4">
-              <div class="font-medium text-indigo-600">OFF-{{ date('Y', strtotime($offerte->created_at)) }}-{{ str_pad($offerte->id, 3, '0', STR_PAD_LEFT) }}</div>
-              @if($offerte->status === 'accepted' && $offerte->factuur)
-                <div class="text-xs text-green-600 flex items-center gap-1 mt-1">
-                  ✓ <a href="{{ route('facturen.edit', $offerte->factuur->id) }}" class="hover:text-green-800">Factuur aangemaakt</a>
+              <div class="font-medium text-indigo-600">F{{ date('Y', strtotime($factuur->invoice_date)) }}-{{ str_pad($factuur->id, 3, '0', STR_PAD_LEFT) }}</div>
+              @if($factuur->offerte_id)
+                <div class="text-xs text-gray-500 flex items-center gap-1 mt-1">
+                  🔗 <a href="{{ route('offertes.show', $factuur->offerte_id) }}" class="text-indigo-600 hover:text-indigo-800">Offerte</a>
                 </div>
               @endif
             </td>
             <td class="px-4 py-4">
-              <div class="font-medium text-gray-900">{{ $offerte->customer->name_company ?? 'Onbekend' }}</div>
-              <div class="text-sm text-gray-500">{{ $offerte->customer->email ?? '' }}</div>
-            </td>
-            <td class="px-4 py-4 text-sm text-gray-900 font-medium">
-              @php
-                $totalExVat = $offerte->products->sum(function($product) {
-                  return $product->price * $product->pivot->quantity;
-                });
-                $totalIncVat = $totalExVat * 1.21;
-              @endphp
-              €{{ number_format($totalIncVat, 2, ',', '.') }}
+              <div class="font-medium text-gray-900">{{ $factuur->customer->name_company ?? 'Onbekend' }}</div>
+              <div class="text-sm text-gray-500">{{ $factuur->customer->email ?? '' }}</div>
             </td>
             <td class="px-4 py-4 text-sm text-gray-900">
-              {{ \Carbon\Carbon::parse($offerte->created_at)->format('d M Y') }}
+              {{ \Carbon\Carbon::parse($factuur->invoice_date)->format('d M Y') }}
             </td>
             <td class="px-4 py-4 text-sm">
               @php
-                $expiryDate = \Carbon\Carbon::parse($offerte->created_at)->addDays(30);
-                $isExpired = $expiryDate->isPast() || $offerte->status === 'rejected';
+                $dueDate = \Carbon\Carbon::parse($factuur->due_date);
+                $isOverdue = $dueDate->isPast() && $factuur->status !== 'betaald';
               @endphp
-              <span class="{{ $isExpired ? 'text-red-600 font-medium' : 'text-gray-900' }}">
-                {{ $isExpired && $expiryDate->isPast() ? 'Verlopen (' . $expiryDate->format('d M') . ')' : $expiryDate->format('d M Y') }}
+              <span class="{{ $isOverdue ? 'text-red-600 font-medium' : 'text-gray-900' }}">
+                {{ $dueDate->format('d M Y') }}
               </span>
+            </td>
+            <td class="px-4 py-4 text-sm text-gray-900 font-medium">
+              €{{ number_format($factuur->total_amount ?? 0, 2, ',', '.') }}
             </td>
             <td class="px-4 py-4">
               @php
                 $statusColors = [
-                  'accepted' => 'bg-green-100 text-green-700',
-                  'rejected' => 'bg-red-100 text-red-700',
-                  'pending' => 'bg-blue-100 text-blue-700',
-                  'draft' => 'bg-gray-100 text-gray-700'
+                  'betaald' => 'bg-green-100 text-green-700',
+                  'verlopen' => 'bg-red-100 text-red-700',
+                  'verzonden' => 'bg-yellow-100 text-yellow-700',
+                  'concept' => 'bg-gray-100 text-gray-700'
                 ];
                 $statusLabels = [
-                  'accepted' => 'Goedgekeurd',
-                  'rejected' => 'Verlopen',
-                  'pending' => 'Verstuurd',
-                  'draft' => 'Concept'
-                ];
-                $statusIcons = [
-                  'accepted' => '✓',
-                  'rejected' => '!',
-                  'pending' => '🔵',
-                  'draft' => '📝'
+                  'betaald' => 'Betaald',
+                  'verlopen' => 'Verlopen',
+                  'verzonden' => 'Verzonden',
+                  'concept' => 'Concept'
                 ];
               @endphp
-              <span class="inline-flex items-center gap-1 px-3 py-1 rounded text-xs font-medium {{ $statusColors[$offerte->status] ?? 'bg-gray-100 text-gray-800' }}">
-                <span>{{ $statusIcons[$offerte->status] ?? '' }}</span> {{ $statusLabels[$offerte->status] ?? ucfirst($offerte->status) }}
+              <span class="inline-flex items-center gap-1 px-3 py-1 rounded text-xs font-medium {{ $statusColors[$factuur->status] ?? 'bg-gray-100 text-gray-800' }}">
+                {{ $statusLabels[$factuur->status] ?? ucfirst($factuur->status) }}
               </span>
             </td>
             <td class="px-4 py-4">
               <div class="flex gap-2">
-                <a href="{{ route('offertes.show', $offerte->id) }}" class="text-gray-600 hover:text-gray-900" title="Bekijken">👁️</a>
-                <a href="{{ route('offertes.edit', $offerte->id) }}" class="text-gray-600 hover:text-gray-900" title="Bewerken">✏️</a>
+                <a href="{{ route('facturen.send', $factuur->id) }}" class="text-gray-600 hover:text-gray-900" title="Bekijken">👁️</a>
+                <a href="{{ route('facturen.edit', $factuur->id) }}" class="text-gray-600 hover:text-gray-900" title="Bewerken">✏️</a>
                 <button
-                  wire:click="delete({{ $offerte->id }})"
-                  wire:confirm="Weet je zeker dat je deze offerte wilt verwijderen?"
+                  wire:click="delete({{ $factuur->id }})"
+                  wire:confirm="Weet je zeker dat je deze factuur wilt verwijderen?"
                   class="text-red-600 hover:text-red-900"
                   title="Verwijderen"
                 >🗑️</button>
-                <a href="{{ route('offertes.pdf', $offerte->id) }}" class="text-indigo-600 hover:text-indigo-900" title="Downloaden">⬇️</a>
+                <a href="{{ route('facturen.pdf', $factuur->id) }}" class="text-indigo-600 hover:text-indigo-900" title="Downloaden">⬇️</a>
               </div>
             </td>
           </tr>
         @empty
           <tr>
             <td colspan="7" class="px-4 py-8 text-center text-gray-500 text-sm">
-              Geen offertes gevonden
+              Geen facturen gevonden
             </td>
           </tr>
         @endforelse
@@ -134,18 +123,18 @@
   <!-- Footer with pagination -->
   <div class="flex flex-col items-center gap-3 px-4 py-3 border-t border-gray-200 bg-gray-50">
     <div class="text-sm text-gray-700">
-      Showing {{ $offertes->firstItem() ?? 0 }}–{{ $offertes->lastItem() ?? 0 }} of {{ $offertes->total() }}
+      Toont {{ $facturen->firstItem() ?? 0 }}–{{ $facturen->lastItem() ?? 0 }} van {{ $facturen->total() }}
     </div>
     <div class="flex gap-1 items-center">
-      @if ($offertes->onFirstPage())
+      @if ($facturen->onFirstPage())
         <span class="px-3 py-1 border border-gray-300 rounded text-sm text-gray-400 cursor-not-allowed">‹</span>
       @else
         <button wire:click="previousPage" class="px-3 py-1 border border-gray-300 rounded text-sm text-gray-700 hover:bg-gray-100">‹</button>
       @endif
 
       @php
-        $currentPage = $offertes->currentPage();
-        $lastPage = $offertes->lastPage();
+        $currentPage = $facturen->currentPage();
+        $lastPage = $facturen->lastPage();
         $start = max(1, $currentPage - 2);
         $end = min($lastPage, $currentPage + 2);
       @endphp
@@ -172,7 +161,7 @@
         <button wire:click="gotoPage({{ $lastPage }})" class="px-3 py-1 border border-gray-300 rounded text-sm text-gray-700 hover:bg-gray-100">{{ $lastPage }}</button>
       @endif
 
-      @if ($offertes->hasMorePages())
+      @if ($facturen->hasMorePages())
         <button wire:click="nextPage" class="px-3 py-1 border border-gray-300 rounded text-sm text-gray-700 hover:bg-gray-100">›</button>
       @else
         <span class="px-3 py-1 border border-gray-300 rounded text-sm text-gray-400 cursor-not-allowed">›</span>

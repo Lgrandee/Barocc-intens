@@ -133,6 +133,7 @@ class OfferteController extends Controller
         ]);
 
         $offerte = Offerte::findOrFail($id);
+        $oldStatus = $offerte->status;
 
         // Store primary product in product_id for backward compatibility
         $primaryProduct = $validated['product_ids'][0] ?? null;
@@ -151,6 +152,42 @@ class OfferteController extends Controller
         }
         $offerte->products()->sync($syncData);
 
+        // Als offerte wordt geaccepteerd, maak automatisch een factuur aan
+        if ($validated['status'] === 'accepted' && $oldStatus !== 'accepted') {
+            $this->createFactuurFromOfferte($offerte);
+        }
+
         return redirect()->route('offertes.show', $offerte->id)->with('success', 'Offerte bijgewerkt.');
+    }
+
+    /**
+     * Create a factuur automatically from an accepted offerte
+     */
+    private function createFactuurFromOfferte(Offerte $offerte)
+    {
+        // Check if factuur already exists for this offerte
+        if ($offerte->factuur()->exists()) {
+            return;
+        }
+
+        // Create factuur with same data as offerte
+        $factuur = \App\Models\Factuur::create([
+            'name_company_id' => $offerte->name_company_id,
+            'offerte_id' => $offerte->id,
+            'invoice_date' => now(),
+            'due_date' => now()->addDays(30), // Default 30 dagen betalingstermijn
+            'reference' => 'OFF-' . date('Y', strtotime($offerte->created_at)) . '-' . str_pad($offerte->id, 3, '0', STR_PAD_LEFT),
+            'payment_method' => 'bank_transfer',
+            'description' => 'Factuur voor geaccepteerde offerte',
+            'status' => 'concept',
+        ]);
+
+        // Copy products from offerte to factuur
+        $syncData = [];
+        foreach ($offerte->products as $product) {
+            $qty = $product->pivot->quantity ?? 1;
+            $syncData[$product->id] = ['quantity' => $qty];
+        }
+        $factuur->products()->sync($syncData);
     }
 }

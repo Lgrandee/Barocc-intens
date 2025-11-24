@@ -13,10 +13,16 @@ class Factuur extends Model
 
     protected $fillable = [
         'name_company_id',
-        'product_id',
+        'offerte_id',
         'invoice_date',
         'due_date',
+        'reference',
+        'payment_method',
+        'description',
+        'notes',
         'status',
+        'sent_at',
+        'paid_at',
     ];
 
     public function customer()
@@ -24,8 +30,22 @@ class Factuur extends Model
         return $this->belongsTo(Customer::class, 'name_company_id');
     }
 
-    public function product()
+    public function products()
     {
-        return $this->belongsTo(Product::class);
+        return $this->belongsToMany(Product::class, 'factuur_products')
+                    ->withPivot('quantity')
+                    ->withTimestamps();
+    }
+
+    public function offerte()
+    {
+        return $this->belongsTo(Offerte::class);
+    }
+
+    public function getTotalAmountAttribute()
+    {
+        return $this->products->sum(function ($product) {
+            return $product->price * $product->pivot->quantity;
+        });
     }
 }

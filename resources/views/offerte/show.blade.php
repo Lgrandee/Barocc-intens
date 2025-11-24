@@ -37,6 +37,28 @@
       </div>
     </div>
 
+    <!-- Factuur Status -->
+    @if($offerte->status === 'accepted' && $offerte->factuur)
+      <div class="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="text-green-600 text-2xl">✓</div>
+            <div>
+              <div class="font-medium text-green-900">Factuur automatisch aangemaakt</div>
+              <div class="text-sm text-green-700">
+                Factuur FACT-{{ date('Y', strtotime($offerte->factuur->invoice_date)) }}-{{ str_pad($offerte->factuur->id, 3, '0', STR_PAD_LEFT) }}
+                is aangemaakt op {{ \Carbon\Carbon::parse($offerte->factuur->created_at)->format('d-m-Y H:i') }}
+              </div>
+            </div>
+          </div>
+          <a href="{{ route('facturen.edit', $offerte->factuur->id) }}"
+            class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 text-sm font-medium">
+            📄 Bekijk Factuur
+          </a>
+        </div>
+      </div>
+    @endif
+
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
       <!-- Left: Controle Checklist -->
       <div class="bg-white border border-gray-200 rounded-lg">
