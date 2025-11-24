@@ -16,7 +16,7 @@ class UserSeeder extends Seeder
     {
         User::create([
             'name' => 'Admin User',
-            'email' => 'admin@gmail.com',
+            'email' => 'admin@barroc.com',
             'password' => Hash::make('password123'),
             'is_admin' => true,
             'department' => 'Management',
@@ -24,7 +24,7 @@ class UserSeeder extends Seeder
 
         User::create([
             'name' => 'Sales Medewerker',
-            'email' => 'sales@barocc.nl',
+            'email' => 'sales@barroc.nl',
             'password' => Hash::make('password123'),
             'is_admin' => false,
             'department' => 'Sales',
@@ -32,7 +32,7 @@ class UserSeeder extends Seeder
 
         User::create([
             'name' => 'Purchasing Medewerker',
-            'email' => 'purchasing@barocc.nl',
+            'email' => 'purchasing@barroc.nl',
             'password' => Hash::make('password123'),
             'is_admin' => false,
             'department' => 'Purchasing',
@@ -40,7 +40,7 @@ class UserSeeder extends Seeder
 
         User::create([
             'name' => 'Finance Medewerker',
-            'email' => 'finance@barocc.nl',
+            'email' => 'finance@barroc.nl',
             'password' => Hash::make('password123'),
             'is_admin' => false,
             'department' => 'Finance',
@@ -48,7 +48,7 @@ class UserSeeder extends Seeder
 
         User::create([
             'name' => 'Technician Medewerker',
-            'email' => 'technician@barocc.nl',
+            'email' => 'technician@barroc.nl',
             'password' => Hash::make('password123'),
             'is_admin' => false,
             'department' => 'Technician',
@@ -56,7 +56,7 @@ class UserSeeder extends Seeder
 
         User::create([
             'name' => 'Planner Medewerker',
-            'email' => 'planner@barocc.nl',
+            'email' => 'planner@barroc.nl',
             'password' => Hash::make('password123'),
             'is_admin' => false,
             'department' => 'Planner',
