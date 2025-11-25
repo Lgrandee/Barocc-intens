@@ -43,6 +43,21 @@ class ProductMultiSelect extends Component
         }
     }
 
+    public function remove(int $productId)
+    {
+        // Remove from selected array
+        $key = array_search($productId, $this->selected);
+        if ($key !== false) {
+            unset($this->selected[$key]);
+            $this->selected = array_values($this->selected); // Re-index array
+        }
+
+        // Remove quantity
+        if (isset($this->quantities[$productId])) {
+            unset($this->quantities[$productId]);
+        }
+    }
+
     public function increment($productId)
     {
         if (isset($this->quantities[$productId])) {
