@@ -13,7 +13,7 @@
 @endsection
 
 @section('stats')
-	<div class="flex-1 min-w-0 bg-white border border-gray-200 rounded-lg p-4">
+	<div class="flex-1 min-w-0 bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
 		<div class="flex justify-between items-start">
 			<h3 class="text-sm text-gray-500">Open Tickets</h3>
 			<div class="w-8 h-8 flex items-center justify-center bg-red-100 text-red-700 rounded">🎫</div>
@@ -22,7 +22,7 @@
 		<div class="flex items-center gap-2 text-sm text-green-600 mt-2">↓ 15% <span class="text-gray-400">vs vorige week</span></div>
 	</div>
 
-	<div class="flex-1 min-w-0 bg-white border border-gray-200 rounded-lg p-4">
+	<div class="flex-1 min-w-0 bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
 		<div class="flex justify-between items-start">
 			<h3 class="text-sm text-gray-500">Geplande Service</h3>
 			<div class="w-8 h-8 flex items-center justify-center bg-red-100 text-red-700 rounded">🔧</div>
@@ -31,7 +31,7 @@
 		<div class="flex items-center gap-2 text-sm text-green-600 mt-2">↑ 3 <span class="text-gray-400">voor deze week</span></div>
 	</div>
 
-	<div class="flex-1 min-w-0 bg-white border border-gray-200 rounded-lg p-4">
+	<div class="flex-1 min-w-0 bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
 		<div class="flex justify-between items-start">
 			<h3 class="text-sm text-gray-500">Gemiddelde Responstijd</h3>
 			<div class="w-8 h-8 flex items-center justify-center bg-red-100 text-red-700 rounded">⏱️</div>
@@ -40,7 +40,7 @@
 		<div class="flex items-center gap-2 text-sm text-red-600 mt-2">↑ 0.8u <span class="text-gray-400">vs vorige week</span></div>
 	</div>
 
-	<div class="flex-1 min-w-0 bg-white border border-gray-200 rounded-lg p-4">
+	<div class="flex-1 min-w-0 bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
 		<div class="flex justify-between items-start">
 			<h3 class="text-sm text-gray-500">Voorraad Alerts</h3>
 			<div class="w-8 h-8 flex items-center justify-center bg-red-100 text-red-700 rounded">⚠️</div>
@@ -51,7 +51,7 @@
 @endsection
 
 @section('alerts')
-<div class="bg-white border border-gray-200 rounded-lg overflow-hidden">
+<div class="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm">
 	<div class="flex items-center justify-between p-4 border-b border-gray-100">
 		<h2 class="text-lg font-medium">Planning Deze Week</h2>
 		<div class="flex gap-2">
@@ -60,7 +60,7 @@
 		</div>
 	</div>
 	<div class="p-4 space-y-3">
-		<div class="border border-gray-200 rounded-lg p-3">
+		<div class="border border-gray-200 rounded-lg p-3 shadow-sm">
 			<div class="font-medium text-sm mb-2">Maandag 18 november</div>
 			<div class="space-y-2">
 				<div class="flex items-center gap-2 p-2 bg-gray-50 rounded text-sm">
@@ -73,7 +73,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="border border-gray-200 rounded-lg p-3">
+		<div class="border border-gray-200 rounded-lg p-3 shadow-sm">
 			<div class="font-medium text-sm mb-2">Dinsdag 19 november</div>
 			<div class="space-y-2">
 				<div class="flex items-center gap-2 p-2 bg-gray-50 rounded text-sm">
@@ -87,7 +87,7 @@
 @endsection
 
 @section('modules')
-<div class="bg-white border border-gray-200 rounded-lg overflow-hidden">
+<div class="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm">
 	<div class="flex items-center justify-between p-4 border-b border-gray-100">
 		<h2 class="text-lg font-medium">Urgente Tickets</h2>
 		<button class="text-sm text-gray-600">Alle Tickets</button>

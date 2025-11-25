@@ -13,7 +13,7 @@
 @endsection
 
 @section('stats')
-	<div class="flex-1 min-w-0 bg-white border border-gray-200 rounded-lg p-4">
+	<div class="flex-1 min-w-0 bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
 		<div class="flex justify-between items-start">
 			<h3 class="text-sm text-gray-500">Totaal Offertes</h3>
 			<div class="w-8 h-8 flex items-center justify-center bg-blue-100 text-blue-700 rounded">📝</div>
@@ -22,7 +22,7 @@
 		<div class="flex items-center gap-2 text-sm text-green-600 mt-2">↑ 12% <span class="text-gray-400">vs vorige maand</span></div>
 	</div>
 
-	<div class="flex-1 min-w-0 bg-white border border-gray-200 rounded-lg p-4">
+	<div class="flex-1 min-w-0 bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
 		<div class="flex justify-between items-start">
 			<h3 class="text-sm text-gray-500">Conversie Ratio</h3>
 			<div class="w-8 h-8 flex items-center justify-center bg-blue-100 text-blue-700 rounded">📈</div>
@@ -31,7 +31,7 @@
 		<div class="flex items-center gap-2 text-sm text-green-600 mt-2">↑ 4% <span class="text-gray-400">vs vorige maand</span></div>
 	</div>
 
-	<div class="flex-1 min-w-0 bg-white border border-gray-200 rounded-lg p-4">
+	<div class="flex-1 min-w-0 bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
 		<div class="flex justify-between items-start">
 			<h3 class="text-sm text-gray-500">Nieuwe Leads</h3>
 			<div class="w-8 h-8 flex items-center justify-center bg-blue-100 text-blue-700 rounded">👥</div>
@@ -40,7 +40,7 @@
 		<div class="flex items-center gap-2 text-sm text-red-600 mt-2">↓ 2% <span class="text-gray-400">vs vorige maand</span></div>
 	</div>
 
-	<div class="flex-1 min-w-0 bg-white border border-gray-200 rounded-lg p-4">
+	<div class="flex-1 min-w-0 bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
 		<div class="flex justify-between items-start">
 			<h3 class="text-sm text-gray-500">Gem. Dealwaarde</h3>
 			<div class="w-8 h-8 flex items-center justify-center bg-blue-100 text-blue-700 rounded">💰</div>
@@ -51,7 +51,7 @@
 @endsection
 
 @section('alerts')
-<div class="bg-white border border-gray-200 rounded-lg overflow-hidden">
+<div class="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm">
 	<div class="flex items-center justify-between p-4 border-b border-gray-100">
 		<h2 class="text-lg font-medium">Sales Pipeline</h2>
 		<button class="text-sm text-gray-600">Grafiek Weergave</button>
@@ -65,7 +65,7 @@
 @endsection
 
 @section('modules')
-<div class="bg-white border border-gray-200 rounded-lg overflow-hidden">
+<div class="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm">
 	<div class="flex items-center justify-between p-4 border-b border-gray-100">
 		<h2 class="text-lg font-medium">Recente Deals</h2>
 		<button class="text-sm text-gray-600">Alle Deals</button>
