@@ -21,6 +21,8 @@ return new class extends Migration
             $table->string('address')->nullable();
             $table->string('zipcode')->nullable();
             $table->string('phone_num')->nullable();
+            $table->enum('status', ['active', 'inactive', 'vacation'])->default('active');
+            $table->timestamp('last_active')->nullable();
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();

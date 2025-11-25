@@ -22,15 +22,25 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
+        $departments = ['Sales', 'Purchasing', 'Finance', 'Technician', 'Planner', 'Management'];
+        $statuses = ['active', 'inactive', 'vacation'];
+
+        $name = fake()->name();
+        $email = strtolower(str_replace(' ', '.', $name)) . '@barroc.nl';
+
         return [
-            'name' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
+            'name' => $name,
+            'email' => $email,
             'email_verified_at' => now(),
             'password' => static::$password ??= 'password',
             'remember_token' => Str::random(10),
             'two_factor_secret' => Str::random(10),
             'two_factor_recovery_codes' => Str::random(10),
             'two_factor_confirmed_at' => now(),
+            'phone_num' => fake()->boolean(70) ? fake()->phoneNumber() : null,
+            'department' => fake()->randomElement($departments),
+            'status' => fake()->randomElement($statuses),
+            'last_active' => fake()->dateTimeBetween('-1 week', 'now'),
         ];
     }
 
