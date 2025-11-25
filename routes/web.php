@@ -4,6 +4,8 @@ use App\Http\Controllers\ContractController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\FactuurController;
 use App\Http\Controllers\OfferteController;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UserManagementController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 use Livewire\Volt\Volt;
@@ -60,6 +62,17 @@ Route::put('/facturen/{id}', [FactuurController::class, 'update'])->middleware('
 Route::get('/facturen/{id}/send', [FactuurController::class, 'send'])->middleware('auth')->name('facturen.send');
 Route::post('/facturen/{id}/send', [FactuurController::class, 'sendEmail'])->middleware('auth')->name('facturen.sendEmail');
 Route::get('/facturen/{id}/pdf', [FactuurController::class, 'downloadPdf'])->middleware('auth')->name('facturen.pdf');
+
+// Management - Rollen beheer
+Route::get('/management/roles', [RoleController::class, 'index'])->middleware('auth')->name('management.roles.index');
+
+// Management - Gebruikersbeheer
+Route::get('/management/users', [UserManagementController::class, 'index'])->middleware('auth')->name('management.users.index');
+Route::get('/management/users/create', [UserManagementController::class, 'create'])->middleware('auth')->name('management.users.create');
+Route::post('/management/users', [UserManagementController::class, 'store'])->middleware('auth')->name('management.users.store');
+Route::get('/management/users/{id}/edit', [UserManagementController::class, 'edit'])->middleware('auth')->name('management.users.edit');
+Route::put('/management/users/{id}', [UserManagementController::class, 'update'])->middleware('auth')->name('management.users.update');
+Route::delete('/management/users/{id}', [UserManagementController::class, 'destroy'])->middleware('auth')->name('management.users.destroy');
 
 // Geen afdeling
 Route::view('none', 'none')->middleware('auth')->name('none');
