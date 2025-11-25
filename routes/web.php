@@ -16,7 +16,7 @@ Route::view('purchasing', 'purchasing.dashboard')->middleware('auth')->name('pur
 Route::view('finance', 'finance.dashboard')->middleware('auth')->name('finance');
 Route::view('technician', 'technician.dashboard')->middleware('auth')->name('technician');
 Route::view('planner', 'planner.dashboard')->middleware('auth')->name('planner');
-Route::view('admin', 'admin.dashboard-simple')->middleware('auth')->name('management');
+Route::view('admin', 'admin.dashboard')->middleware('auth')->name('management');
 
 // Sales Department
 Route::view('sales', 'sales.dashboard')->middleware('auth')->name('sales.dashboard');
@@ -46,7 +46,7 @@ Route::view('none', 'none')->middleware('auth')->name('none');
 
 
 
-Route::view('dashboard', 'dashboard')
+Route::view('dashboard', 'admin.dashboard')
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 

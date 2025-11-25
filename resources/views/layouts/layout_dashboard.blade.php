@@ -1,13 +1,11 @@
 <x-layouts.app :title="$title ?? 'Dashboard'">
   <main class="p-6">
-    {{-- Welcome header wrapper (always rendered). Child views can override background via `welcome_classes`
-         and inject content into the wrapper by defining `@section('welcome')`. If no section is
-         provided, the default content below will be shown. --}}
+
     <div class="@yield('welcome_classes','bg-gradient-to-br from-indigo-800 to-indigo-900') text-white rounded-xl p-6 mb-6 ">
       @hasSection('welcome')
         @yield('welcome')
       @else
-        <h1 class="text-xl font-semibold mb-1">Welkom, {{ auth()->user()->name ?? 'Gebruiker' }}</h1>
+        <h1 class="text-xl font-semibold mb-1">Welkom, {{ auth()->user()->name ?? '' }}</h1>
         <p class="text-sm opacity-90 mb-4">Beheer alle systeemmodules en monitor de prestaties</p>
         <div class="flex flex-wrap gap-3">
           <button class="bg-white/10 border border-white/20 text-white text-sm px-4 py-2 rounded">Gebruikers Beheren</button>
