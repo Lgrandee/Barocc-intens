@@ -14,6 +14,8 @@ class Feedback extends Model
     protected $fillable = [
         'feedback',
         'employee_id',
+        'customer_id',
+        'description',
     ];
 
     public function employee()
@@ -21,8 +23,20 @@ class Feedback extends Model
         return $this->belongsTo(User::class, 'employee_id');
     }
 
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class, 'customer_id');
+    }
+
     public function planningTickets()
     {
         return $this->hasMany(PlanningTicket::class, 'feedback_id');
+    }
+
+    public function products()
+    {
+        return $this->belongsToMany(Product::class, 'feedback_product')
+                    ->withPivot('quantity')
+                    ->withTimestamps();
     }
 }

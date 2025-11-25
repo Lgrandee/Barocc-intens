@@ -39,4 +39,11 @@ class Product extends Model
     {
         return $this->hasMany(OrderLogistic::class);
     }
+
+    public function feedbacks()
+    {
+        return $this->belongsToMany(Feedback::class, 'feedback_product')
+                    ->withPivot('quantity')
+                    ->withTimestamps();
+    }
 }

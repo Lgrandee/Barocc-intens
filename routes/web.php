@@ -3,8 +3,10 @@
 use App\Http\Controllers\ContractController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\FactuurController;
+use App\Http\Controllers\MaintenanceController;
 use App\Http\Controllers\OfferteController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\TicketController;
 use App\Http\Controllers\UserManagementController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
@@ -36,6 +38,18 @@ Route::view('purchasing', 'purchasing.dashboard')->middleware('auth')->name('pur
 Route::view('finance', 'finance.dashboard')->middleware('auth')->name('finance.dashboard');
 Route::view('technician', 'technician.dashboard')->middleware('auth')->name('technician.dashboard');
 Route::view('planner', 'planner.dashboard')->middleware('auth')->name('planner.dashboard');
+
+// Technician - Onderhoud routes
+Route::get('/technician/planning', [MaintenanceController::class, 'planning'])->middleware('auth')->name('technician.planning');
+Route::get('/technician/onderhoud/{id}', [MaintenanceController::class, 'show'])->middleware('auth')->name('technician.onderhoud.show');
+Route::get('/technician/onderhoud/{id}/rapport', [MaintenanceController::class, 'rapport'])->middleware('auth')->name('technician.onderhoud.rapport');
+Route::post('/technician/onderhoud/{id}/rapport', [MaintenanceController::class, 'updateRapport'])->middleware('auth')->name('technician.onderhoud.rapport.update');
+
+// Planner - Ticket systeem
+Route::get('/planner/tickets', [TicketController::class, 'index'])->middleware('auth')->name('planner.tickets.index');
+Route::get('/planner/tickets/create', [TicketController::class, 'create'])->middleware('auth')->name('planner.tickets.create');
+Route::post('/planner/tickets', [TicketController::class, 'store'])->middleware('auth')->name('planner.tickets.store');
+Route::get('/planner/tickets/{id}', [TicketController::class, 'show'])->middleware('auth')->name('planner.tickets.show');
 
 // Contract routes - alleen voor Finance en Admin
 Route::get('/contracts', [ContractController::class, 'index'])->middleware('auth')->name('contracts.index');

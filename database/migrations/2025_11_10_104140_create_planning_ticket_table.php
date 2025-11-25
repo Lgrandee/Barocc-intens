@@ -18,6 +18,9 @@ return new class extends Migration
             $table->string('location');
             $table->dateTime('scheduled_time');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->enum('status', ['open', 'voltooid', 'probleem', 'te_laat'])->default('open');
+            $table->enum('priority', ['laag', 'medium', 'hoog'])->nullable();
+            $table->text('used_materials')->nullable();
             $table->timestamps();
         });
     }

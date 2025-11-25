@@ -24,6 +24,7 @@ class PlanningTicketFactory extends Factory
             'location' => $this->faker->city(),
             'scheduled_time' => $this->faker->dateTimeBetween('+1 day', '+1 week'),
             'user_id' => User::inRandomOrder()->first()?->id,
+            'priority' => $this->faker->randomElement(['laag', 'medium', 'hoog', null]),
         ];
     }
 }
