@@ -128,10 +128,20 @@
             </div>
           </div>
 
+          <h3 class="font-semibold mt-6 mb-4">Maintenance Policy</h3>
+          <div class="bg-blue-50 border border-blue-200 rounded-md p-4 text-sm">
+            <p class="font-medium text-blue-900 mb-2">Monthly Maintenance Included</p>
+            <p class="text-blue-800 mb-2">Customers receive <strong>1 free maintenance visit per month</strong> as part of this contract.</p>
+            <p class="text-blue-800 mb-2">Additional maintenance beyond the monthly visit will incur extra charges, unless the issue is caused by a defect from Barroc Intens.</p>
+            <p class="text-blue-800">Contact: <strong>service@barroc.nl</strong> or <strong>+31 (0)20 123 4567</strong></p>
+          </div>
+
           <h3 class="font-semibold mt-6 mb-4">Attachments</h3>
           <div class="space-y-2">
-            <a href="#" class="text-indigo-600 hover:text-indigo-700 text-sm block">Contract-CON-{{ date('Y', strtotime($contract->start_date)) }}-{{ str_pad($contract->id, 3, '0', STR_PAD_LEFT) }}.pdf</a>
-            <a href="#" class="text-indigo-600 hover:text-indigo-700 text-sm block">Installation report 2024.pdf</a>
+            <a href="{{ route('contracts.pdf', $contract->id) }}" class="text-indigo-600 hover:text-indigo-700 text-sm flex items-center gap-2">
+              <span>📄</span>
+              <span>Contract-CON-{{ date('Y', strtotime($contract->start_date)) }}-{{ str_pad($contract->id, 3, '0', STR_PAD_LEFT) }}.pdf</span>
+            </a>
           </div>
 
           <h3 class="font-semibold mt-6 mb-4">Activity & Notes</h3>
