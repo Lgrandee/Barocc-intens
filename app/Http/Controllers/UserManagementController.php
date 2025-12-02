@@ -18,7 +18,28 @@ class UserManagementController extends Controller
             abort(403, 'Toegang geweigerd. Alleen Management heeft toegang tot gebruikersbeheer.');
         }
 
-        $users = User::orderBy('created_at', 'desc')->paginate(10);
+        $query = User::query();
+
+        // Zoekterm filter (naam of email)
+        if (request()->filled('search')) {
+            $search = request('search');
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('email', 'like', "%{$search}%");
+            });
+        }
+
+        // Rol filter
+        if (request()->filled('role')) {
+            $query->where('department', request('role'));
+        }
+
+        // Status filter
+        if (request()->filled('status')) {
+            $query->where('status', request('status'));
+        }
+
+        $users = $query->orderBy('created_at', 'desc')->paginate(15)->appends(request()->query());
 
         return view('management.users.index', compact('users'));
     }
