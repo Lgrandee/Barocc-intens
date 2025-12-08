@@ -14,10 +14,13 @@ return new class extends Migration
         Schema::create('planning_tickets', function (Blueprint $table) {
             $table->id();
             $table->enum('catagory', ['meeting', 'installation', 'service']);
-            $table->foreignId('feedback_id')->constrained('feedbacks');
+            $table->foreignId('feedback_id')->nullable()->constrained('feedbacks')->onDelete('set null');
             $table->string('location');
             $table->dateTime('scheduled_time');
-            $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->enum('status', ['open', 'voltooid', 'probleem', 'te_laat'])->default('open');
+            $table->enum('priority', ['laag', 'medium', 'hoog'])->nullable();
+            $table->text('used_materials')->nullable();
             $table->timestamps();
         });
     }

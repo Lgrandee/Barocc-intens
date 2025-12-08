@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\User;
+use App\Models\Customer;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -19,8 +20,10 @@ class FeedbackFactory extends Factory
     public function definition(): array
     {
         return [
-            'feedback' => $this->faker->sentence(),
+            'customer_id' => Customer::inRandomOrder()->first()?->id,
             'employee_id' => User::inRandomOrder()->first()?->id,
+            'feedback' => $this->faker->sentence(),
+            'description' => $this->faker->paragraph(),
         ];
     }
 }

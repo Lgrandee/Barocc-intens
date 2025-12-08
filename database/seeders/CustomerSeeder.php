@@ -9,10 +9,6 @@ class CustomerSeeder extends Seeder
 {
     public function run(): void
     {
-        Customer::factory(20)->create([
-            'offerte_id' => null,
-            'factuur_id' => null,
-            'contract_id' => null,
-        ]);
+        Customer::factory(20)->create();
     }
 }

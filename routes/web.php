@@ -1,6 +1,13 @@
 <?php
 
+use App\Http\Controllers\ContractController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\FactuurController;
+use App\Http\Controllers\MaintenanceController;
+use App\Http\Controllers\OfferteController;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\TicketController;
+use App\Http\Controllers\UserManagementController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 use Livewire\Volt\Volt;
@@ -22,6 +29,9 @@ Route::view('sales', 'sales.dashboard')->middleware('auth')->name('sales.dashboa
 Route::get('/customers', [CustomerController::class, 'index'])->name('customers.index');
 Route::get('/customers/create', [CustomerController::class, 'create'])->name('customers.create');
 Route::post('/customers', [CustomerController::class, 'store'])->name('customers.store');
+Route::get('/customers/{customer}/edit', [CustomerController::class, 'goToEdit'])->name('customers.edit');
+Route::put('/customers/{customer}', [CustomerController::class, 'edit'])->name('customers.update');
+Route::delete('/customers/{customer}', [CustomerController::class, 'destroy'])->name('customers.destroy');
 
 
 Route::view('purchasing', 'purchasing.dashboard')->middleware('auth')->name('purchasing.dashboard');
@@ -83,7 +93,7 @@ Route::view('none', 'none')->middleware('auth')->name('none');
 
 
 
-Route::view('dashboard', 'dashboard')
+Route::view('dashboard', 'admin.dashboard')
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 

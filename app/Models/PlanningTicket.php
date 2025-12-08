@@ -17,6 +17,9 @@ class PlanningTicket extends Model
         'location',
         'scheduled_time',
         'user_id',
+        'status',
+        'priority',
+        'used_materials',
     ];
 
     public function user()

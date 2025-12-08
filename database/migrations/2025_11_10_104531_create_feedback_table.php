@@ -13,8 +13,10 @@ return new class extends Migration
     {
         Schema::create('feedbacks', function (Blueprint $table) {
             $table->id();
-            $table->text('feedback');
-            $table->foreignId('employee_id')->constrained('users');
+            $table->foreignId('customer_id')->constrained('customers')->onDelete('cascade');
+            $table->foreignId('employee_id')->constrained('users')->onDelete('cascade');
+            $table->text('feedback')->nullable();
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }

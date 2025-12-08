@@ -19,23 +19,20 @@ class Customer extends Model
         'city',
         'zipcode',
         'bkr_status',
-        'offerte_id',
-        'factuur_id',
-        'contract_id',
     ];
 
-    public function offerte()
+    public function offertes()
     {
-        return $this->belongsTo(Offerte::class);
+        return $this->hasMany(Offerte::class, 'name_company_id');
     }
 
-    public function factuur()
+    public function facturen()
     {
-        return $this->belongsTo(Factuur::class);
+        return $this->hasMany(Factuur::class, 'name_company_id');
     }
 
-    public function contract()
+    public function contracts()
     {
-        return $this->belongsTo(Contract::class);
+        return $this->hasMany(Contract::class, 'name_company_id');
     }
 }

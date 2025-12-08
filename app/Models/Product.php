@@ -20,6 +20,11 @@ class Product extends Model
         return $this->hasMany(Contract::class);
     }
 
+    public function linkedContracts()
+    {
+        return $this->belongsToMany(Contract::class, 'contract_product');
+    }
+
     public function facturen()
     {
         return $this->hasMany(Factuur::class);
@@ -33,5 +38,12 @@ class Product extends Model
     public function orderLogistics()
     {
         return $this->hasMany(OrderLogistic::class);
+    }
+
+    public function feedbacks()
+    {
+        return $this->belongsToMany(Feedback::class, 'feedback_product')
+                    ->withPivot('quantity')
+                    ->withTimestamps();
     }
 }
