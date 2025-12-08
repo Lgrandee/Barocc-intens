@@ -101,6 +101,10 @@ Route::view('admin/dashboard', 'admin.dashboard')
     ->middleware(['auth', 'verified'])
     ->name('admin.dashboard');
 
+Route::view('admin/sales', 'sales.dashboard')
+    ->middleware(['auth', 'verified'])
+    ->name('admin.sales.dashboard');
+
 Route::middleware(['auth'])->group(function () {
     Route::redirect('settings', 'settings/profile');
 
